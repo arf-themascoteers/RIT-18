@@ -19,14 +19,14 @@ class ANNBase(nn.Module):
         if utils.is_test():
             self.num_epochs = 3
         self.batch_size = 6000
-        self.lr = 0.005
+        self.lr = 0.001
 
     def train_model(self):
         if self.TEST:
             return
         self.train()
         self.to(self.device)
-        optimizer = torch.optim.RMSprop(self.parameters(), lr=self.lr)
+        optimizer = torch.optim.Adam(self.parameters(), lr=self.lr)
         criterion = nn.CrossEntropyLoss()
         dataloader = DataLoader(self.train_ds, batch_size=self.batch_size, shuffle=True)
         total_batch = len(dataloader)

@@ -11,7 +11,6 @@ for fold_number, (train_ds, test_ds, validation_ds) in enumerate(dm.get_k_folds(
     accuracy, pc = ann.run()
     accuracies.append(accuracy)
     pcs.append(accuracy)
-    break
 
 
 accuracies = np.array(accuracies)
