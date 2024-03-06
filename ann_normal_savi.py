@@ -26,5 +26,8 @@ class ANNNormalSAVI(ANNSimple):
         den = (nir+red+self.L)
         return num/den
 
+    def verbose_after(self, ds):
+        print(" L:",round(self.L.item(),4), end="")
+
 
 
