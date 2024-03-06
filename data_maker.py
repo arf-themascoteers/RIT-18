@@ -28,20 +28,21 @@ def make_data(source, task):
     file = f"data/{task}.csv"
     band_centers = dataset['band_centers'][0]
     classes = dataset['classes']
-    cols = [str(i) for i in band_centers]
+    cols = [str(int(i)) for i in band_centers]
     cols.append("class")
     rows = []
-    total = data.shape[1] * data.shape[2]
-    for i in range(data.shape[1]):
-        for j in range(data.shape[2]):
+    total = int(data.shape[1] * data.shape[2]/9000)
+    done = 0
+    for i in range(0,data.shape[1],30):
+        for j in range(0,data.shape[2],30):
             if mask[i,j] != 0:
                 row = []
                 for k in range(6):
                     row.append(data[k,i,j])
                 row.append(labels[i,j])
                 rows.append(row)
-                now = (i*data.shape[2])+j
-                print(f"Row {i} done. {now} done among {total}: {(now/total)*100:.2f}%")
+                done = done + 1
+                print(f"Row {i} done. {done} done among {total}: {(done/total)*100:.2f}%")
         if len(rows) > 0:
             syncdf(file, rows, cols)
             rows = []

@@ -4,7 +4,7 @@ import torch
 from sklearn import model_selection
 from sklearn.preprocessing import MinMaxScaler
 import utils
-from soil_dataset import SoilDataset
+from pixel_dataset import PixelDataset
 
 
 class DSManager:
@@ -20,6 +20,8 @@ class DSManager:
         df = pd.read_csv(utils.get_data_file())
         self.derived_columns = []
         for col in df.columns:
+            if col == "class":
+                continue
             scaler = MinMaxScaler()
             df[col] = scaler.fit_transform(df[[col]])
 
@@ -49,13 +51,14 @@ class DSManager:
 
     @staticmethod
     def derive(df, column_name):
-        b4 = df["b4"]
-        b8 = df["b8"]
+        b4 = df["900"]
+        b8 = df["680"]
         if column_name == "ndvi":
             den = (b8+b4)
             den[den==0]=0.0001
             new_values = (b8-b4)/den
-        return new_values
+            return new_values
+        return None
 
     def get_k_folds(self):
         kf = KFold(n_splits=self.folds)
@@ -70,9 +73,9 @@ class DSManager:
             validation_x = validation_data[:, 0:-1]
             validation_y = validation_data[:, -1]
 
-            yield SoilDataset(train_x, train_y), \
-                SoilDataset(test_x, test_y), \
-                SoilDataset(validation_x, validation_y)
+            yield PixelDataset(train_x, train_y), \
+                PixelDataset(test_x, test_y), \
+                PixelDataset(validation_x, validation_y)
 
     def get_folds(self):
         return self.folds
@@ -80,10 +83,9 @@ class DSManager:
 
 if __name__ == "__main__":
     from torch.utils.data import DataLoader
-    from soil_dataset import SoilDataset
-    dm = DSManager(3,["ndvi","b1","b4"])
+    dm = DSManager(3,["550","ndvi"])
     for fold_number, (dtrain, dtest, dval) in enumerate(dm.get_k_folds()):
-        dataloader = DataLoader(dtrain, batch_size=500, shuffle=True)
+        dataloader = DataLoader(dtrain, batch_size=500, shuffle=False)
         for batch_number, (x, y) in enumerate(dataloader):
             print(x.shape)
             print(y.shape)
@@ -91,3 +93,11 @@ if __name__ == "__main__":
         break
 
 
+    dm = DSManager(3)
+    for fold_number, (dtrain, dtest, dval) in enumerate(dm.get_k_folds()):
+        dataloader = DataLoader(dtrain, batch_size=500, shuffle=False)
+        for batch_number, (x, y) in enumerate(dataloader):
+            print(x.shape)
+            print(y.shape)
+            break
+        break
