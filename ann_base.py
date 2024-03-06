@@ -97,10 +97,10 @@ class ANNBase(nn.Module):
         self.eval()
         self.to(self.device)
         y_all, y_hat_all = self.evaluate(ds)
-        r2 = r2_score(y_all, y_hat_all)
-        rmse = root_mean_squared_error(y_all, y_hat_all)
-        pc = self.pc(ds)
-        return r2, rmse, pc
+        _, predicted = torch.max(y_hat_all, 1)
+        total = y_all.size(0)
+        val_correct = (predicted == y_all).sum().item()
+        val_accuracy = val_correct / total
 
     def run(self):
         self.train_model()
