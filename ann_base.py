@@ -15,7 +15,7 @@ class ANNBase(nn.Module):
         self.train_ds = train_ds
         self.test_ds = test_ds
         self.validation_ds = validation_ds
-        self.num_epochs = 200
+        self.num_epochs = 2
         if utils.is_test():
             self.num_epochs = 3
         self.batch_size = 30000
@@ -101,6 +101,7 @@ class ANNBase(nn.Module):
         total = y_all.size(0)
         val_correct = (predicted == y_all).sum().item()
         val_accuracy = val_correct / total
+        return val_accuracy
 
     def run(self):
         self.train_model()

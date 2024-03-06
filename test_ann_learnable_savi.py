@@ -14,6 +14,6 @@ accuracies = np.array(accuracies)
 
 print(np.mean(accuracies))
 print(np.std(accuracies))
-
+print(accuracies)
 
 
