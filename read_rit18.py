@@ -37,7 +37,7 @@ test_data = test_data[:6]
 band_centers = dataset['band_centers'][0]
 band_center_units = dataset['band_center_units']
 classes = dataset['classes']                          
-
+print(len(classes))
 #Print some info about the dataset
 # print(dataset['sensor'][0])
 # print(dataset['info'][0])

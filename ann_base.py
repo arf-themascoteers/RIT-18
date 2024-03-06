@@ -15,7 +15,7 @@ class ANNBase(nn.Module):
         self.train_ds = train_ds
         self.test_ds = test_ds
         self.validation_ds = validation_ds
-        self.num_epochs = 2000
+        self.num_epochs = 500
         if utils.is_test():
             self.num_epochs = 3
         self.batch_size = 30000
@@ -27,7 +27,7 @@ class ANNBase(nn.Module):
         self.train()
         self.to(self.device)
         optimizer = torch.optim.Adam(self.parameters(), lr=self.lr, weight_decay=0.001)
-        criterion = torch.nn.MSELoss(reduction='mean')
+        criterion = nn.CrossEntropyLoss()
         dataloader = DataLoader(self.train_ds, batch_size=self.batch_size, shuffle=True)
         total_batch = len(dataloader)
         for epoch in range(self.num_epochs):
@@ -35,16 +35,23 @@ class ANNBase(nn.Module):
                 x = x.to(self.device)
                 y = y.to(self.device)
                 y_hat = self(x)
-                y_hat = y_hat.reshape(-1)
                 loss = criterion(y_hat, y)
 
                 if self.verbose:
-                    r2_test = r2_score(y.detach().cpu().numpy(), y_hat.detach().cpu().numpy())
-                    y_all, y_hat_all = self.evaluate(self.validation_ds)
-                    r2_validation = r2_score(y_all, y_hat_all)
+                    _, predicted = torch.max(y_hat, 1)
+                    total = y.size(0)
+                    train_correct = (predicted == y).sum().item()
+                    train_accuracy = train_correct / total
+
+                    y, y_hat = self.evaluate(self.validation_ds)
+                    _, predicted = torch.max(y_hat, 1)
+                    total = y.size(0)
+                    val_correct = (predicted == y).sum().item()
+                    val_accuracy = val_correct / total
+
                     print(f'Epoch:{epoch} (of {self.num_epochs}), Batch: {batch_number+1} of {total_batch}, '
                           f'Loss:{loss.item():.6f}, '
-                          f'R2_TRAIN: {r2_test:.3f}, R2_Validation: {r2_validation:.3f}', end=""
+                          f'Train Acc: {train_accuracy:.3f}, Val Acc: {val_accuracy:.3f}', end=""
                           )
                     self.verbose_after(self.validation_ds)
                     print("")
@@ -64,19 +71,19 @@ class ANNBase(nn.Module):
         batch_size = 30000
         dataloader = DataLoader(ds, batch_size=batch_size, shuffle=False)
 
-        y_all = np.zeros(0)
-        y_hat_all = np.zeros(0)
+        y_all = torch.zeros(0).to(torch.long)
+        y_hat_all = torch.zeros(0)
 
         for (x, y) in dataloader:
             x = x.to(self.device)
             y = y.to(self.device)
             y_hat = self(x)
-            y_hat = y_hat.reshape(-1)
-            y = y.detach().cpu().numpy()
-            y_hat = y_hat.detach().cpu().numpy()
 
-            y_all = np.concatenate((y_all, y))
-            y_hat_all = np.concatenate((y_hat_all, y_hat))
+            y = y.detach().cpu()
+            y_hat = y_hat.detach().cpu()
+
+            y_all = torch.concatenate((y_all, y))
+            y_hat_all = torch.concatenate((y_hat_all, y_hat))
 
         return y_all, y_hat_all
 

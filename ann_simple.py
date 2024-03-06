@@ -8,9 +8,9 @@ class ANNSimple(ANNBase):
         self.linear = nn.Sequential(
             nn.Linear(train_ds.x.shape[1],20),
             nn.LeakyReLU(),
-            nn.Linear(20, 10),
+            nn.Linear(20, 20),
             nn.LeakyReLU(),
-            nn.Linear(10,1)
+            nn.Linear(20,19)
         )
 
     def forward(self,x):

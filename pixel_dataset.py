@@ -11,4 +11,4 @@ class PixelDataset(Dataset):
         return len(self.y)
 
     def __getitem__(self, idx):
-        return self.x[idx], self.y[idx]
+        return self.x[idx], self.y[idx].to(torch.long)
