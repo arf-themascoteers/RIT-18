@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 from ann_simple import ANNSimple
+import utils
 
 
 class ANNNormalSAVI(ANNSimple):
@@ -27,7 +28,9 @@ class ANNNormalSAVI(ANNSimple):
         return num/den
 
     def verbose_after(self, ds):
-        print(" L:",round(self.L.item(),4), end="")
+        print(f" L: {round(self.L.item(),4)},  PC: {round(self.pc(self.validation_ds),4)}", end="")
 
-
+    def pc(self, ds):
+        y = ds.y.numpy()
+        return utils.calculate_pc(y, self.savi(ds.x.to(self.device)).reshape(-1).detach().cpu().numpy())
 
