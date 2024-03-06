@@ -19,7 +19,7 @@ class ANNBase(nn.Module):
         if utils.is_test():
             self.num_epochs = 3
         self.batch_size = 30000
-        self.lr = 0.005
+        self.lr = 0.001
 
     def train_model(self):
         if self.TEST:
