@@ -17,13 +17,13 @@ class DSManager:
                 continue
             scaler = MinMaxScaler()
             df[col] = scaler.fit_transform(df[[col]])
-        self.data = df.sample(frac=1).to_numpy()
+        self.data = df.sample(frac=1, random_state=1).to_numpy()
 
     def get_k_folds(self):
         kf = KFold(n_splits=self.folds)
         for i, (train_index, test_index) in enumerate(kf.split(self.data)):
             train_data = self.data[train_index]
-            train_data, validation_data = model_selection.train_test_split(train_data, test_size=0.1, random_state=2)
+            train_data, validation_data = model_selection.train_test_split(train_data, test_size=0.1, random_state=1)
             test_data = self.data[test_index]
             train_x = train_data[:, 0:-1]
             train_y = train_data[:, -1]

@@ -15,11 +15,11 @@ class ANNBase(nn.Module):
         self.train_ds = train_ds
         self.test_ds = test_ds
         self.validation_ds = validation_ds
-        self.num_epochs = 200
+        self.num_epochs = 500
         if utils.is_test():
             self.num_epochs = 3
-        self.batch_size = 30000
-        self.lr = 0.001
+        self.batch_size = 60000
+        self.lr = 0.005
 
     def train_model(self):
         if self.TEST:
@@ -68,7 +68,7 @@ class ANNBase(nn.Module):
         pass
 
     def evaluate(self, ds):
-        batch_size = 30000
+        batch_size = 60000
         dataloader = DataLoader(ds, batch_size=batch_size, shuffle=False)
 
         y_all = torch.zeros(0).to(torch.long)
