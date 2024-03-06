@@ -1,0 +1,23 @@
+import torch
+import torch.nn as nn
+from ann_simple import ANNSimple
+
+
+class ANNNormalSAVI(ANNSimple):
+    def __init__(self, train_ds, test_ds, validation_ds):
+        super().__init__(train_ds, test_ds, validation_ds)
+        self.L = nn.Parameter(torch.tensor(0.5), requires_grad=False)
+
+    def forward(self,x):
+        x = self.savi(x)
+        return self.linear(x)
+
+    def savi(self,x):
+        red = x[:,2:3]
+        nir = x[:,5:6]
+        num = (nir - red)*(1+self.L)
+        den = (nir+red+self.L)
+        return num/den
+
+
+

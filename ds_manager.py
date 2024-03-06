@@ -8,57 +8,16 @@ from pixel_dataset import PixelDataset
 
 
 class DSManager:
-    def __init__(self, folds=10, feature_set=None):        
+    def __init__(self, folds=10):
         self.folds = folds
-        self.feature_set = feature_set
-        
-        if self.feature_set is None:
-            self.feature_set = utils.get_all_features()
-        
         torch.manual_seed(0)
-        
         df = pd.read_csv(utils.get_data_file())
-        self.derived_columns = []
         for col in df.columns:
             if col == "class":
                 continue
             scaler = MinMaxScaler()
             df[col] = scaler.fit_transform(df[[col]])
-
-        df, derived_column, base_columns = DSManager.filter(df, self.feature_set)
         self.data = df.sample(frac=1).to_numpy()
-
-    @staticmethod
-    def filter(df, feature_set):
-        all_base_columns = utils.get_all_features()
-        base_columns = []
-        derived_columns = []
-        for feature in feature_set:
-            if feature in all_base_columns:
-                base_columns.append(feature)
-            else:
-                derived_columns.append(feature)
-
-        for derived_column in derived_columns:
-            new_values = DSManager.derive(df, derived_column)
-            df.insert(len(df.columns) - 1, derived_column, new_values)
-
-        for a_base_column in all_base_columns:
-            if a_base_column not in base_columns:
-                df.drop(columns=[a_base_column], axis=1, inplace=True)
-
-        return df, derived_columns, base_columns
-
-    @staticmethod
-    def derive(df, column_name):
-        b4 = df["900"]
-        b8 = df["680"]
-        if column_name == "ndvi":
-            den = (b8+b4)
-            den[den==0]=0.0001
-            new_values = (b8-b4)/den
-            return new_values
-        return None
 
     def get_k_folds(self):
         kf = KFold(n_splits=self.folds)
