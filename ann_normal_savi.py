@@ -6,6 +6,13 @@ from ann_simple import ANNSimple
 class ANNNormalSAVI(ANNSimple):
     def __init__(self, train_ds, test_ds, validation_ds):
         super().__init__(train_ds, test_ds, validation_ds)
+        self.linear = nn.Sequential(
+            nn.Linear(1,20),
+            nn.LeakyReLU(),
+            nn.Linear(20, 20),
+            nn.LeakyReLU(),
+            nn.Linear(20,19)
+        )
         self.L = nn.Parameter(torch.tensor(0.5), requires_grad=False)
 
     def forward(self,x):
