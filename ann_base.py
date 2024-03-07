@@ -15,11 +15,11 @@ class ANNBase(nn.Module):
         self.train_ds = train_ds
         self.test_ds = test_ds
         self.validation_ds = validation_ds
-        self.num_epochs = 2000
+        self.num_epochs = 1000
         if utils.is_test():
             self.num_epochs = 3
         self.batch_size = 6000
-        self.lr = 0.0001
+        self.lr = 0.001
 
     def train_model(self):
         if self.TEST:
@@ -102,7 +102,8 @@ class ANNBase(nn.Module):
         val_correct = (predicted == y_all).sum().item()
         val_accuracy = val_correct / total
         pc = self.pc(ds)
-        return val_accuracy, pc
+        #return val_accuracy, pc
+        return val_accuracy
 
     def run(self):
         self.train_model()

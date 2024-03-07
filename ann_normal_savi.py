@@ -28,7 +28,7 @@ class ANNNormalSAVI(ANNSimple):
         return num/den
 
     def verbose_after(self, ds):
-        print(f" L: {round(self.L.item(),4)}  ,  PC: {round(self.pc(self.validation_ds),4)}", end="")
+        print(f" L: {round(self.L.item(),4)}", end="")
 
     def pc(self, ds):
         y = ds.y.numpy()
