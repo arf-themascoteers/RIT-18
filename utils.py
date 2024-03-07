@@ -14,7 +14,7 @@ def get_device():
     return torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-def get_all_features():
+def get_all_indices():
     df = pd.read_csv(get_data_file())
     columns = list(df.columns)
     return columns[0:-1]
@@ -22,7 +22,7 @@ def get_all_features():
 
 def get_data_file():
     if is_test():
-        return "data/train.csv"
+        return "data/train_min.csv"
     return "data/train.csv"
 
 

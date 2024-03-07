@@ -1,16 +1,17 @@
-import numpy as np
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
-from sklearn.metrics import r2_score, root_mean_squared_error
 import utils
+from savi_0p5 import SAVI_0p5
+from evi_2p5_6_7p5_1 import EVI_2p5_6_7p5_1
 
 
-class ANNBase(nn.Module):
-    def __init__(self, train_ds, test_ds, validation_ds):
+class ANN(nn.Module):
+    def __init__(self, train_ds, test_ds, validation_ds, indices):
         super().__init__()
+        self.indices_names = indices
         self.verbose = True
-        self.TEST = False
+        self.TEST = utils.is_test()
         self.device = utils.get_device()
         self.train_ds = train_ds
         self.test_ds = test_ds
@@ -20,6 +21,28 @@ class ANNBase(nn.Module):
             self.num_epochs = 3
         self.batch_size = 6000
         self.lr = 0.001
+        self.indices = []
+        for index_name in self.indices_names:
+            index_module_class = ANN.get_index_module(index_name)
+            self.indices.append(index_module_class())
+
+        self.linear = nn.Sequential(
+            nn.Linear(len(indices),20),
+            nn.LeakyReLU(),
+            nn.Linear(20, 20),
+            nn.LeakyReLU(),
+            nn.Linear(20,19)
+        )
+
+    @staticmethod
+    def get_index_module(index_name):
+        if index_name == "savi_0p5":
+            return SAVI_0p5
+        if index_name == "evi_2p5_6_7p5_1":
+            return EVI_2p5_6_7p5_1
+
+    def forward(self,x):
+        return self.linear(x)
 
     def train_model(self):
         if self.TEST:
