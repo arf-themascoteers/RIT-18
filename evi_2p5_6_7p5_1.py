@@ -1,9 +1,5 @@
-import numpy as np
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader
-from sklearn.metrics import r2_score, root_mean_squared_error
-import utils
 
 
 class EVI_2p5_6_7p5_1(nn.Module):

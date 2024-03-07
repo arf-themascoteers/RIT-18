@@ -28,8 +28,13 @@ class Reporter:
         for index_index in range(len(self.indices_list)):
             details_row = self.details[index_index]
             details_row = details_row[details_row != 0]
-            score_summary[index_index, 0] = np.round(np.mean(details_row),3)
-            score_summary[index_index, 1] = np.round(np.std(details_row),3)
+            mean = 0
+            std = 0
+            if len(details_row) != 0:
+                mean = np.round(np.mean(details_row),3)
+                std = np.round(np.std(details_row),3)
+            score_summary[index_index, 0] = mean
+            score_summary[index_index, 1] = std
 
         df = pd.DataFrame(data=score_summary, columns=["Mean", "Std"])
         indices_names = ["-".join(indices) for indices in self.indices_list]

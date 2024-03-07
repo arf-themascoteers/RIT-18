@@ -11,7 +11,6 @@ class ANN(nn.Module):
         super().__init__()
         self.indices_names = indices
         self.verbose = True
-        self.TEST = utils.is_test()
         self.device = utils.get_device()
         self.train_ds = train_ds
         self.test_ds = test_ds
@@ -40,14 +39,13 @@ class ANN(nn.Module):
             return SAVI_0p5
         if index_name == "evi_2p5_6_7p5_1":
             return EVI_2p5_6_7p5_1
+        return None
 
     def forward(self,x):
         x = torch.concatenate([index(x) for index in self.indices], dim=1)
         return self.linear(x)
 
     def train_model(self):
-        if self.TEST:
-            return
         self.train()
         self.to(self.device)
         optimizer = torch.optim.Adam(self.parameters(), lr=self.lr)

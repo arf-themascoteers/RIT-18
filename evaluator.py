@@ -33,8 +33,8 @@ class Evaluator:
             self.reporter.write_details()
             self.reporter.update_summary()
 
-    def calculate_score(self, train_ds, test_ds, validation_ds,index):
-        ann = ANN(train_ds, test_ds, validation_ds, self.indices_list[index])
+    def calculate_score(self, train_ds, test_ds, validation_ds, indices):
+        ann = ANN(train_ds, test_ds, validation_ds, indices)
         acc = ann.run()
         return acc
 
