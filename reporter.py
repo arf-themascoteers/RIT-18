@@ -13,6 +13,8 @@ class Reporter:
         self.details_file = f"results/{prefix}_details.csv"
         self.details = np.zeros((len(self.algorithms), self.folds))
         self.sync_details_file()
+        if not os.path.exists("results"):
+            os.mkdir("results")
 
     def sync_details_file(self):
         if not os.path.exists(self.details_file):
