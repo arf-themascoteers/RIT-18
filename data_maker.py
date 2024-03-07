@@ -5,6 +5,11 @@ import numpy as np
 import pandas as pd
 import os
 
+grass = [2]
+tree = [14]
+sand = [15]
+water = [16,17]
+asphalt = [18]
 
 def syncdf(file, new_rows, cols):
     df = pd.DataFrame(data=new_rows, columns = cols)
@@ -31,15 +36,31 @@ def make_data(source, task):
     cols = [str(int(i)) for i in band_centers]
     cols.append("class")
     rows = []
-    total = int(data.shape[1] * data.shape[2]/9000)
+    total = int(data.shape[1] * data.shape[2]/400)
     done = 0
-    for i in range(0,data.shape[1],30):
-        for j in range(0,data.shape[2],30):
+    for i in range(0,data.shape[1],20):
+        for j in range(0,data.shape[2],20):
             if mask[i,j] != 0:
                 row = []
                 for k in range(6):
                     row.append(data[k,i,j])
-                row.append(labels[i,j])
+                label = labels[i,j]
+                filter_label = -1
+                if label in grass:
+                    filter_label = 0
+                elif label in tree:
+                    filter_label = 1
+                elif label in sand:
+                    filter_label = 2
+                elif label in water:
+                    filter_label = 3
+                elif label in asphalt:
+                    filter_label = 4
+
+                if filter_label == -1:
+                    continue
+
+                row.append(filter_label)
                 rows.append(row)
                 done = done + 1
                 print(f"Row {i} done. {done} done among {total}: {(done/total)*100:.2f}%")

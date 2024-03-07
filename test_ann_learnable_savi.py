@@ -14,14 +14,9 @@ for fold_number, (train_ds, test_ds, validation_ds) in enumerate(dm.get_k_folds(
 
 
 accuracies = np.array(accuracies)
-pcs = np.abs(np.array(pcs))
 
 print(np.mean(accuracies))
 print(np.std(accuracies))
 print(accuracies)
-
-print(np.mean(pcs))
-print(np.std(pcs))
-print(pcs)
 
 

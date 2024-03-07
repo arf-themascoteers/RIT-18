@@ -12,7 +12,7 @@ class ANNNormalSAVI(ANNSimple):
             nn.LeakyReLU(),
             nn.Linear(20, 20),
             nn.LeakyReLU(),
-            nn.Linear(20,19)
+            nn.Linear(20,5)
         )
         self.L = nn.Parameter(torch.tensor(L), requires_grad=False)
 

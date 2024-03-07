@@ -17,7 +17,7 @@ class ANNLearnableSAVI(ANNNormalSAVI):
         )
 
         self.linear3 = nn.Sequential(
-            nn.Linear(30, 19),
+            nn.Linear(30, 5),
         )
 
         self.L.requires_grad = True

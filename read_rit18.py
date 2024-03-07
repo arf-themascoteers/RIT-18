@@ -55,4 +55,16 @@ image = np.transpose(image, (1, 2, 0))
 plt.imshow(image)
 plt.show()
 
+train_labels[train_labels!=18]=0
+classes = ["Back","Asphalt"]
+plt.imshow(train_labels, cmap='plasma')
+cbar = plt.colorbar()
+cbar.set_ticks(np.arange(0, 2, 1))
+cbar.set_ticklabels(classes)
+plt.show()
+
+print(np.max(train_data))
+print(np.max(val_data))
+print(np.max(test_data))
+print(classes)
 
