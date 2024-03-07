@@ -27,6 +27,7 @@ class Reporter:
         score_summary = np.zeros((len(self.algorithms), 2))
         for index_algorithm in range(len(self.algorithms)):
             details_row = self.details[index_algorithm]
+            details_row = details_row[details_row != 0]
             score_summary[index_algorithm, 0] = np.round(np.mean(details_row),3)
             score_summary[index_algorithm, 1] = np.round(np.std(details_row),3)
 

@@ -1,6 +1,5 @@
 from reporter import Reporter
 from ds_manager import DSManager
-import utils
 from ann_normal_savi import ANNNormalSAVI
 from ann_learnable_savi import ANNLearnableSAVI
 from ann_learnable_simple_savi import ANNLearnableSimpleSAVI
