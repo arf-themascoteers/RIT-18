@@ -42,6 +42,7 @@ class ANN(nn.Module):
             return EVI_2p5_6_7p5_1
 
     def forward(self,x):
+        x = torch.concatenate([index(x) for index in self.indices], dim=1)
         return self.linear(x)
 
     def train_model(self):
@@ -124,8 +125,6 @@ class ANN(nn.Module):
         total = y_all.size(0)
         val_correct = (predicted == y_all).sum().item()
         val_accuracy = val_correct / total
-        pc = self.pc(ds)
-        #return val_accuracy, pc
         return val_accuracy
 
     def run(self):
