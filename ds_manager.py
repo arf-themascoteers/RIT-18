@@ -12,11 +12,9 @@ class DSManager:
         self.folds = folds
         torch.manual_seed(0)
         df = pd.read_csv(utils.get_data_file())
-        for col in df.columns:
-            if col == "class":
-                continue
-            scaler = MinMaxScaler()
-            df[col] = scaler.fit_transform(df[[col]])
+        columns_to_scale = df.columns[:-1]
+        scaler = MinMaxScaler()
+        df[columns_to_scale] = scaler.fit_transform(df[columns_to_scale])
         self.data = df.sample(frac=1, random_state=1).to_numpy()
 
     def get_k_folds(self):

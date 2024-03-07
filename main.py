@@ -5,6 +5,8 @@ if __name__ == "__main__":
         prefix="mixed",
         folds=10,
         indices=[
+            ["savi_0p5"],
+            ["evi_2p5_6_7p5_1"],
             ["savi_0p5","evi_2p5_6_7p5_1"]
         ]
     )

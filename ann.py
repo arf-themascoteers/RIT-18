@@ -81,9 +81,9 @@ class ANN(nn.Module):
                 loss.backward()
                 optimizer.step()
                 optimizer.zero_grad()
-            self.after_epoch(epoch)
+            self.batch_msg(epoch)
 
-    def after_epoch(self, epoch):
+    def batch_dict(self, epoch):
         pass
 
     def verbose_after(self, ds):
