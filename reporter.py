@@ -10,7 +10,7 @@ class Reporter:
         self.folds = folds
         if not os.path.exists("results"):
             os.mkdir("results")
-        self.details_columns = [str(i) for i in range(self.folds)]
+        self.details_columns = [f"Fold-{i}" for i in range(self.folds)]
         self.summary_file = f"results/{prefix}_summary.csv"
         self.details_file = f"results/{prefix}_details.csv"
         self.details = np.zeros((len(self.algorithms), self.folds))
@@ -25,7 +25,7 @@ class Reporter:
         self.details = df.to_numpy()
 
     def update_summary(self):
-        score_summary = np.zeros((self.algorithms, 2))
+        score_summary = np.zeros((len(self.algorithms), 2))
         for index_algorithm in range(len(self.algorithms)):
             details_row = self.details[index_algorithm]
             score_summary[index_algorithm, 0] = np.round(np.mean(details_row),3)
