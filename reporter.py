@@ -16,7 +16,6 @@ class Reporter:
         self.details = np.zeros((len(self.algorithms), self.folds))
         self.sync_details_file()
 
-
     def sync_details_file(self):
         if not os.path.exists(self.details_file):
             self.write_details()
