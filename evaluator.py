@@ -38,7 +38,6 @@ class Evaluator:
 
     @staticmethod
     def calculate_score(train_ds, test_ds, validation_ds,algorithm):
-        return "0.4"
         print(f"Train: {len(train_ds.y)}, Test: {len(test_ds.y)}, Validation: {len(validation_ds.y)}")
         clazz = None
         if algorithm == "ann_normal_savi":
