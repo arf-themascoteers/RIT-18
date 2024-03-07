@@ -1,8 +1,9 @@
 import torch
 import torch.nn as nn
+from si import SI
 
 
-class EVI_2p5_6_7p5_1(nn.Module):
+class EVI_2p5_6_7p5_1(SI):
     def __init__(self):
         super().__init__()
         self.G = nn.Parameter(torch.tensor(2.5), requires_grad=False)

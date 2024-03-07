@@ -4,6 +4,8 @@ from torch.utils.data import DataLoader
 import utils
 from savi_0p5 import SAVI_0p5
 from evi_2p5_6_7p5_1 import EVI_2p5_6_7p5_1
+from savi_0p5_l import SAVI_0p5_L
+from evi_2p5_6_7p5_1_l import EVI_2p5_6_7p5_1_L
 
 
 class ANN(nn.Module):
@@ -30,7 +32,7 @@ class ANN(nn.Module):
             nn.LeakyReLU(),
             nn.Linear(20, 20),
             nn.LeakyReLU(),
-            nn.Linear(20,19)
+            nn.Linear(20,5)
         )
 
     @staticmethod
@@ -39,6 +41,10 @@ class ANN(nn.Module):
             return SAVI_0p5
         if index_name == "evi_2p5_6_7p5_1":
             return EVI_2p5_6_7p5_1
+        if index_name == "savi_0p5_l":
+            return SAVI_0p5_L
+        if index_name == "evi_2p5_6_7p5_1_l":
+            return EVI_2p5_6_7p5_1_L
         return None
 
     def forward(self,x):
@@ -73,21 +79,14 @@ class ANN(nn.Module):
 
                     print(f'Epoch:{epoch} (of {self.num_epochs}), Batch: {batch_number+1} of {total_batch}, '
                           f'Loss:{loss.item():.6f}, '
-                          f'Train Acc: {train_accuracy:.3f}, Val Acc: \033[91m {val_accuracy:.3f} \033[0m ', end=""
-                          )
-                    self.verbose_after(self.validation_ds)
-                    print("")
+                          f'Train Acc: {train_accuracy:.3f}, Val Acc: \033[91m {val_accuracy:.3f} \033[0m ')
+                    for index in self.indices:
+                        print(f"{index}: {index.params_dic()}")
 
                 loss.backward()
                 optimizer.step()
                 optimizer.zero_grad()
             self.batch_msg(epoch)
-
-    def batch_dict(self, epoch):
-        pass
-
-    def verbose_after(self, ds):
-        pass
 
     def evaluate(self, ds):
         batch_size = 6000
