@@ -15,7 +15,7 @@ class ANNBase(nn.Module):
         self.train_ds = train_ds
         self.test_ds = test_ds
         self.validation_ds = validation_ds
-        self.num_epochs = 1000
+        self.num_epochs = 200
         if utils.is_test():
             self.num_epochs = 3
         self.batch_size = 6000
