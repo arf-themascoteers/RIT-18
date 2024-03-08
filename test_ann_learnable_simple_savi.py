@@ -1,4 +1,4 @@
-from ann_learnable_savi import ANNLearnableSAVI
+from ann_learnable_simple_savi import ANNLearnableSimpleSAVI
 from ds_manager import DSManager
 import numpy as np
 
@@ -7,7 +7,7 @@ accuracies = []
 pcs = []
 
 for fold_number, (train_ds, test_ds, validation_ds) in enumerate(dm.get_k_folds()):
-    ann = ANNLearnableSAVI(train_ds, test_ds, validation_ds)
+    ann = ANNLearnableSimpleSAVI(train_ds, test_ds, validation_ds)
     accuracy = ann.run()
     accuracies.append(accuracy)
     pcs.append(accuracy)

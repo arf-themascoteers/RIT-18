@@ -15,10 +15,12 @@ class ANNNormalSAVI(ANNSimple):
             nn.Linear(20,5)
         )
         self.L = nn.Parameter(torch.tensor(L), requires_grad=False)
+        self.my_weight = nn.Parameter(torch.tensor(0.5), requires_grad=True)
+        self.my_bias = nn.Parameter(torch.tensor(0.5), requires_grad=True)
 
     def forward(self,x):
         x = self.savi(x)
-        return self.linear(x)
+        return x*self.my_weight + self.my_bias
 
     def savi(self,x):
         red = x[:,2:3]

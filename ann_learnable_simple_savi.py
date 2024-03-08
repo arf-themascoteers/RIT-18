@@ -1,4 +1,4 @@
-from ann_normal_savi import ANNNormalSAVI
+from test_ann_normal_savi import ANNNormalSAVI
 import torch
 import torch.nn as nn
 
